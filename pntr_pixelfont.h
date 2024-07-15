@@ -52,9 +52,9 @@ typedef enum pntr_pixelfont {
     PNTR_PIXELFONT_8X8,
     PNTR_PIXELFONT_8X12,
     PNTR_PIXELFONT_8X14,
+    PNTR_PIXELFONT_10X16,
 
     // TODO: Fix the following fonts.
-    PNTR_PIXELFONT_10X16,
     // PNTR_PIXELFONT_12X16,
     // PNTR_PIXELFONT_12X20,
     // PNTR_PIXELFONT_16X26,
@@ -118,17 +118,15 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
 
     // Get the font.
     const pntr_pixelfont_font* pixelfont = &PNTR_PIXELFONT_FONTS[font];
+
+    printf("Font: %d\n", font);
     if (pixelfont->data == NULL) {
         return pntr_set_error(PNTR_ERROR_NOT_SUPPORTED);
     }
 
     // Create the font atlas.
-    int atlas_width = pixelfont->char_width;
-    if (atlas_width >= 16) {
-        atlas_width *= 2;
-    }
     pntr_image* atlas = pntr_gen_image_color(
-        atlas_width * 255,
+        pixelfont->char_width * 255,
         pixelfont->char_height,
         PNTR_BLANK);
     if (atlas == NULL) {
@@ -147,7 +145,7 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
 
     for (int chr = 0; chr < 255; chr++) {
         uint8_t bt = (uint8_t)chr;
-        switch ( bt ) {
+        switch (bt) {
             case 0xF6: bt = 0x94; break;
             case 0xD6: bt = 0x99; break;
             case 0xFC: bt = 0x81; break;
@@ -158,7 +156,8 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
             case 0xB0: bt = 0xF8; break;
         }
 
-        int bn = pixelfont->char_width;
+        int bn = (int)pixelfont->char_width;
+        if (!bn) continue;
         bn >>= 3;
         if (pixelfont->char_width % 8) bn++;
 
@@ -169,9 +168,7 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
                 uint8_t b = pixelfont->data[index++];
                 for (int k = 0; (k < 8) && c; k++) {
                     if (b & 0x01) {
-                        //push_pixel(fc);
-                        pntr_draw_point(atlas, chr * pixelfont->char_width + k, j, PNTR_WHITE);
-                        //pntr_draw_point(atlas, x + pixelfont.char_width - 1, y + pixelfont.char_height - 1, PNTR_WHITE);
+                        pntr_draw_point(atlas, (chr * pixelfont->char_width) + k, j, PNTR_WHITE);
                     }
 
                     b >>= 1;

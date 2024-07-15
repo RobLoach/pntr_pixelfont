@@ -18,7 +18,7 @@ int main() {
         pntr_assert(font != NULL);
 
         // Generate an image with the text.
-        pntr_image* image = pntr_gen_image_text(font, "Hello, World!", PNTR_BLACK, PNTR_RAYWHITE);
+        pntr_image* image = pntr_gen_image_text(font, "The strong grey fox jumps over the !", PNTR_BLACK, PNTR_RAYWHITE);
         pntr_assert(image != NULL);
 
         // Create some padding around the text.
