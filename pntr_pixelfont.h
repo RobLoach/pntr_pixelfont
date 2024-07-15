@@ -51,9 +51,9 @@ typedef enum pntr_pixelfont {
     PNTR_PIXELFONT_7X12,
     PNTR_PIXELFONT_8X8,
     PNTR_PIXELFONT_8X12,
+    PNTR_PIXELFONT_8X14,
 
     // TODO: Fix the following fonts.
-    // PNTR_PIXELFONT_8X14,
     // PNTR_PIXELFONT_10X16,
     // PNTR_PIXELFONT_12X16,
     // PNTR_PIXELFONT_12X20,

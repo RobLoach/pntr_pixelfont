@@ -17,33 +17,37 @@ The following pixel font sizes are available: 4x6, 5x8, 5x12, 6x8, 6x10, 7x12, 8
 
 ![4x6 Font](test/pntr_pixelfont_test_4x6.png)
 
-### `PNTR_PIXELFONT_5x8`
+### `PNTR_PIXELFONT_5X8`
 
 ![5x8 Font](test/pntr_pixelfont_test_5x8.png)
 
-### `PNTR_PIXELFONT_5x12`
+### `PNTR_PIXELFONT_5X12`
 
 ![5x12 Font](test/pntr_pixelfont_test_5x12.png)
 
-### `PNTR_PIXELFONT_6x8`
+### `PNTR_PIXELFONT_6X8`
 
 ![6x8 Font](test/pntr_pixelfont_test_6x8.png)
 
-### `PNTR_PIXELFONT_6x10`
+### `PNTR_PIXELFONT_6X10`
 
 ![6x10 Font](test/pntr_pixelfont_test_6x10.png)
 
-### `PNTR_PIXELFONT_7x12`
+### `PNTR_PIXELFONT_7X12`
 
 ![7x12 Font](test/pntr_pixelfont_test_7x12.png)
 
-### `PNTR_PIXELFONT_8x8`
+### `PNTR_PIXELFONT_8X8`
 
 ![8x8 Font](test/pntr_pixelfont_test_8x8.png)
 
-### `PNTR_PIXELFONT_8x12`
+### `PNTR_PIXELFONT_8X12`
 
 ![8x12 Font](test/pntr_pixelfont_test_8x12.png)
+
+### `PNTR_PIXELFONT_8X14`
+
+![8x12 Font](test/pntr_pixelfont_test_8x14.png)
 
 ## Usage
 
@@ -58,6 +62,7 @@ The following pixel font sizes are available: 4x6, 5x8, 5x12, 6x8, 6x10, 7x12, 8
 // #define PNTR_PIXELFONT_ENABLE_7X12
 // #define PNTR_PIXELFONT_ENABLE_8X8
 // #define PNTR_PIXELFONT_ENABLE_8X12
+// #define PNTR_PIXELFONT_ENABLE_8X14
 #include "pntr_pixelfont.h"
 
 int main() {
