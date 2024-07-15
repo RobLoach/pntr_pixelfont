@@ -54,7 +54,7 @@ typedef enum pntr_pixelfont {
     PNTR_PIXELFONT_8X14,
 
     // TODO: Fix the following fonts.
-    // PNTR_PIXELFONT_10X16,
+    PNTR_PIXELFONT_10X16,
     // PNTR_PIXELFONT_12X16,
     // PNTR_PIXELFONT_12X20,
     // PNTR_PIXELFONT_16X26,
@@ -123,8 +123,12 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
     }
 
     // Create the font atlas.
+    int atlas_width = pixelfont->char_width;
+    if (atlas_width >= 16) {
+        atlas_width *= 2;
+    }
     pntr_image* atlas = pntr_gen_image_color(
-        pixelfont->char_width * 255,
+        atlas_width * 255,
         pixelfont->char_height,
         PNTR_BLANK);
     if (atlas == NULL) {
@@ -154,30 +158,22 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
             case 0xB0: bt = 0xF8; break;
         }
 
-        uint8_t b;
         int bn = pixelfont->char_width;
         bn >>= 3;
-        if ( pixelfont->char_width % 8 ) bn++;
+        if (pixelfont->char_width % 8) bn++;
 
-        int index = (bt - 0) * pixelfont->char_height * bn;
-        for( int j=0;j<pixelfont->char_height;j++ )
-        {
-            int c=pixelfont->char_width;
-            for(int  i=0;i<bn;i++ )
-            {
-                b = pixelfont->data[index++];
-                for(int k=0;(k<8) && c;k++ )
-                {
-                    if( b & 0x01 )
-                    {
+        int index = bt * pixelfont->char_height * bn;
+        for (int j = 0; j < pixelfont->char_height; j++) {
+            int c = pixelfont->char_width;
+            for (int i = 0; i < bn; i++) {
+                uint8_t b = pixelfont->data[index++];
+                for (int k = 0; (k < 8) && c; k++) {
+                    if (b & 0x01) {
                         //push_pixel(fc);
                         pntr_draw_point(atlas, chr * pixelfont->char_width + k, j, PNTR_WHITE);
                         //pntr_draw_point(atlas, x + pixelfont.char_width - 1, y + pixelfont.char_height - 1, PNTR_WHITE);
                     }
-                    else
-                    {
-                        //push_pixel(bc);
-                    }
+
                     b >>= 1;
                     c--;
                 }
