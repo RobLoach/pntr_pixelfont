@@ -92,8 +92,8 @@ PNTR_PIXELFONT_API pntr_vector pntr_pixelfont_size(pntr_pixelfont font);
 #ifndef PNTR_PIXELFONT_IMPLEMENTATION_ONCE
 #define PNTR_PIXELFONT_IMPLEMENTATION_ONCE
 
-#define PNTR_PIXELFONT_FONT_IMPLEMENTATION
-#include "pntr_pixelfont_font.h"
+#define PNTR_PIXELFONT_DATA_IMPLEMENTATION
+#include "pntr_pixelfont_data.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -116,16 +116,16 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
         return pntr_set_error(PNTR_ERROR_INVALID_ARGS);
     }
 
-    const pntr_pixelfont_font pixelfont = PNTR_PIXELFONT_FONTS[font];
-    if (pixelfont.data == NULL) {
+    // Get the font.
+    const pntr_pixelfont_font* pixelfont = &PNTR_PIXELFONT_FONTS[font];
+    if (pixelfont->data == NULL) {
         return pntr_set_error(PNTR_ERROR_NOT_SUPPORTED);
     }
 
-    const uint8_t* data = (const uint8_t*)pixelfont.data;
-
+    // Create the font atlas.
     pntr_image* atlas = pntr_gen_image_color(
-        pixelfont.char_width * 255,
-        pixelfont.char_height,
+        pixelfont->char_width * 255,
+        pixelfont->char_height,
         PNTR_BLANK);
     if (atlas == NULL) {
         return pntr_set_error(PNTR_ERROR_NO_MEMORY);
@@ -155,23 +155,23 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
         }
 
         uint8_t b;
-        int bn = pixelfont.char_width;
+        int bn = pixelfont->char_width;
         bn >>= 3;
-        if ( pixelfont.char_width % 8 ) bn++;
+        if ( pixelfont->char_width % 8 ) bn++;
 
-        int index = (bt - 0) * pixelfont.char_height * bn;
-        for( int j=0;j<pixelfont.char_height;j++ )
+        int index = (bt - 0) * pixelfont->char_height * bn;
+        for( int j=0;j<pixelfont->char_height;j++ )
         {
-            int c=pixelfont.char_width;
+            int c=pixelfont->char_width;
             for(int  i=0;i<bn;i++ )
             {
-                b = pixelfont.data[index++];
+                b = pixelfont->data[index++];
                 for(int k=0;(k<8) && c;k++ )
                 {
                     if( b & 0x01 )
                     {
                         //push_pixel(fc);
-                        pntr_draw_point(atlas, chr * pixelfont.char_width + k, j, PNTR_WHITE);
+                        pntr_draw_point(atlas, chr * pixelfont->char_width + k, j, PNTR_WHITE);
                         //pntr_draw_point(atlas, x + pixelfont.char_width - 1, y + pixelfont.char_height - 1, PNTR_WHITE);
                     }
                     else
@@ -187,14 +187,14 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
 
     // Build the character set.
     char characters[255];
-    characters[0] = 255; // First character is blank.
+    characters[0] = (char)255; // First character is blank.
     for (int i = 1; i < 254; i++) {
         characters[i] = (char)(i);
     }
     characters[254] = '\0'; // Null-terminate the string.
 
     // Use TTY to build the remaining font parameters.
-    pntr_font* output = pntr_load_font_tty_from_image(atlas, (int)pixelfont.char_width, (int)pixelfont.char_height, characters);
+    pntr_font* output = pntr_load_font_tty_from_image(atlas, (int)pixelfont->char_width, (int)pixelfont->char_height, characters);
     if (output == NULL) {
         pntr_unload_image(atlas);
         return NULL;

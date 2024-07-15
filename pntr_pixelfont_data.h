@@ -13,8 +13,8 @@ extern const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[];
 
 #endif  // PNTR_PIXELFONT_FONT_H_
 
-#ifdef PNTR_PIXELFONT_FONT_IMPLEMENTATION
-#ifndef PNTR_PIXELFONT_FONT_IMPLEMENTATION_ONCE
+#ifdef PNTR_PIXELFONT_DATA_IMPLEMENTATION
+#ifndef PNTR_PIXELFONT_DATA_IMPLEMENTATION_ONCE
 
 #ifdef PNTR_PIXELFONT_ENABLE_ALL
 #ifndef PNTR_PIXELFONT_ENABLE_4X6
@@ -4230,7 +4230,7 @@ const uint8_t PNTR_PIXELFONT_FONT_32x53[256][212]={
 #endif
 
 const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
-    (pntr_pixelfont_font) {
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_4X6
             (const uint8_t*)PNTR_PIXELFONT_FONT_4x6,
@@ -4240,7 +4240,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 4,
         .char_height = 6
     },
-    (pntr_pixelfont_font) {
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_5X8
             (const uint8_t*)PNTR_PIXELFONT_FONT_5x8,
@@ -4250,7 +4250,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 5,
         .char_height = 8
     },
-    (pntr_pixelfont_font) {
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_5X12
             (const uint8_t*)PNTR_PIXELFONT_FONT_5x12,
@@ -4260,7 +4260,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 5,
         .char_height = 12
     },
-    (pntr_pixelfont_font) {
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_6X8
             (const uint8_t*)PNTR_PIXELFONT_FONT_6x8,
@@ -4270,7 +4270,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 6,
         .char_height = 8
     },
-    (pntr_pixelfont_font) {
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_6X10
             (const uint8_t*)PNTR_PIXELFONT_FONT_6x10,
@@ -4280,7 +4280,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 6,
         .char_height = 10
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_7X12
             (const uint8_t*)PNTR_PIXELFONT_FONT_7x12,
@@ -4290,7 +4290,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 7,
         .char_height = 12
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_8X8
             (const uint8_t*)PNTR_PIXELFONT_FONT_8x8,
@@ -4300,7 +4300,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 8,
         .char_height = 8
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_8X12
             (const uint8_t*)PNTR_PIXELFONT_FONT_8x12,
@@ -4310,7 +4310,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 8,
         .char_height = 12
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_8X14
             (const uint8_t*)PNTR_PIXELFONT_FONT_8x14,
@@ -4320,7 +4320,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 8,
         .char_height = 14
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_10X16
             (const uint8_t*)PNTR_PIXELFONT_FONT_10x16,
@@ -4330,7 +4330,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 10,
         .char_height = 16
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_12X16
             (const uint8_t*)PNTR_PIXELFONT_FONT_12x16,
@@ -4340,7 +4340,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 12,
         .char_height = 16
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_12X20
             (const uint8_t*)PNTR_PIXELFONT_FONT_12x20,
@@ -4350,7 +4350,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 12,
         .char_height = 20
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_16X26
             (const uint8_t*)PNTR_PIXELFONT_FONT_16x26,
@@ -4360,7 +4360,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 16,
         .char_height = 26
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_22X36
             (const uint8_t*)PNTR_PIXELFONT_FONT_22x36,
@@ -4370,7 +4370,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 22,
         .char_height = 36
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_24X40
             (const uint8_t*)PNTR_PIXELFONT_FONT_24x40,
@@ -4380,7 +4380,7 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
         .char_width = 24,
         .char_height = 40
     },
-    (pntr_pixelfont_font){
+    {
         .data =
         #ifdef PNTR_PIXELFONT_ENABLE_32X53
             (const uint8_t*)PNTR_PIXELFONT_FONT_32x53,
@@ -4392,5 +4392,5 @@ const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[] = {
     }
 };
 
-#endif // PNTR_PIXELFONT_FONT_IMPLEMENTATION_ONCE
-#endif // PNTR_PIXELFONT_FONT_IMPLEMENTATION
+#endif // PNTR_PIXELFONT_DATA_IMPLEMENTATION_ONCE
+#endif // PNTR_PIXELFONT_DATA_IMPLEMENTATION
