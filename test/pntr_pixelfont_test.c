@@ -31,8 +31,8 @@ int main() {
         image = newImage;
 
         // Save the image.
-        pntr_vector size = pntr_pixelfonts_size(i);
-        sprintf(name, "pntr_pixelfonts_test_%dx%d.png", size.x, size.y);
+        pntr_vector size = pntr_pixelfont_size(i);
+        sprintf(name, "pntr_pixelfont_test_%dx%d.png", size.x, size.y);
         pntr_save_image(image, name);
 
         pntr_unload_image(image);

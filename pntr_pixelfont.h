@@ -1,6 +1,6 @@
 /**********************************************************************************************
 *
-*   pntr_pixelfonts - Additional pixel fonts for pntr, with fonts from uGUI.
+*   pntr_pixelfont - Additional pixel fonts for pntr, with fonts from uGUI.
 *
 *   Copyright 2024 Rob Loach (@RobLoach)
 *   Copyright (C) 2015, Achim Döbler, all rights reserved.
@@ -10,7 +10,7 @@
 *
 *   LICENSE: zlib/libpng
 *
-*   pntr_pixelfonts is licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   pntr_pixelfont is licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software:
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
@@ -30,15 +30,15 @@
 *
 **********************************************************************************************/
 
-#ifndef PNTR_PIXELFONTS_H_
-#define PNTR_PIXELFONTS_H_
+#ifndef PNTR_PIXELFONT_H_
+#define PNTR_PIXELFONT_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef PNTR_PIXELFONTS_API
-    #define PNTR_PIXELFONTS_API PNTR_API
+#ifndef PNTR_PIXELFONT_API
+    #define PNTR_PIXELFONT_API PNTR_API
 #endif
 
 typedef enum pntr_pixelfont {
@@ -51,56 +51,72 @@ typedef enum pntr_pixelfont {
     PNTR_PIXELFONT_7X12,
     PNTR_PIXELFONT_8X8,
     PNTR_PIXELFONT_8X12,
-    PNTR_PIXELFONT_8X14,
-    PNTR_PIXELFONT_10X16,
-    PNTR_PIXELFONT_12X16,
-    PNTR_PIXELFONT_12X20,
-    PNTR_PIXELFONT_16X26,
-    PNTR_PIXELFONT_22X36,
-    PNTR_PIXELFONT_24X40,
-    PNTR_PIXELFONT_32X53,
+
+    // TODO: Fix the following fonts.
+    // PNTR_PIXELFONT_8X14,
+    // PNTR_PIXELFONT_10X16,
+    // PNTR_PIXELFONT_12X16,
+    // PNTR_PIXELFONT_12X20,
+    // PNTR_PIXELFONT_16X26,
+    // PNTR_PIXELFONT_22X36,
+    // PNTR_PIXELFONT_24X40,
+    // PNTR_PIXELFONT_32X53,
     PNTR_PIXELFONT_LAST
 } pntr_pixelfont;
 
-PNTR_PIXELFONTS_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font);
-PNTR_PIXELFONTS_API pntr_vector pntr_pixelfonts_size(pntr_pixelfont font);
+/**
+ * Load a pixel font.
+ *
+ * @param font The pixel font to load.
+ *
+ * @return The loaded font, or NULL on failure, or if the font is not supported.
+ */
+PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font);
+
+/**
+ * Get the size of one character of the given pixel font.
+ *
+ * @param font The pixel font to get the character size of.
+ *
+ * @return A vector representing how large one character in the font is.
+ */
+PNTR_PIXELFONT_API pntr_vector pntr_pixelfont_size(pntr_pixelfont font);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // PNTR_PIXELFONTS_H_
+#endif  // PNTR_PIXELFONT_H_
 
-#ifdef PNTR_PIXELFONTS_IMPLEMENTATION
-#ifndef PNTR_PIXELFONTS_IMPLEMENTATION_ONCE
-#define PNTR_PIXELFONTS_IMPLEMENTATION_ONCE
+#ifdef PNTR_PIXELFONT_IMPLEMENTATION
+#ifndef PNTR_PIXELFONT_IMPLEMENTATION_ONCE
+#define PNTR_PIXELFONT_IMPLEMENTATION_ONCE
 
-#define PNTR_PIXELFONTS_FONT_IMPLEMENTATION
-#include "pntr_pixelfonts_font.h"
+#define PNTR_PIXELFONT_FONT_IMPLEMENTATION
+#include "pntr_pixelfont_font.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include <stdio.h>
 
-PNTR_PIXELFONTS_API pntr_vector pntr_pixelfonts_size(pntr_pixelfont font) {
+PNTR_PIXELFONT_API pntr_vector pntr_pixelfont_size(pntr_pixelfont font) {
     if (font < PNTR_PIXELFONT_FIRST || font >= PNTR_PIXELFONT_LAST) {
         return (pntr_vector) {0, 0};
     }
 
-    const pntr_pixelfonts_font pixelfont = PNTR_PIXELFONTS_FONTS[font];
+    const pntr_pixelfont_font* pixelfont = &PNTR_PIXELFONT_FONTS[font];
     return (pntr_vector) {
-        pixelfont.char_width,
-        pixelfont.char_height
+        pixelfont->char_width,
+        pixelfont->char_height
     };
 }
 
-PNTR_PIXELFONTS_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
+PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
     if (font < PNTR_PIXELFONT_FIRST || font >= PNTR_PIXELFONT_LAST) {
         return pntr_set_error(PNTR_ERROR_INVALID_ARGS);
     }
 
-    const pntr_pixelfonts_font pixelfont = PNTR_PIXELFONTS_FONTS[font];
+    const pntr_pixelfont_font pixelfont = PNTR_PIXELFONT_FONTS[font];
     if (pixelfont.data == NULL) {
         return pntr_set_error(PNTR_ERROR_NOT_SUPPORTED);
     }
@@ -126,7 +142,6 @@ PNTR_PIXELFONTS_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
     // }
 
     for (int chr = 0; chr < 255; chr++) {
-
         uint8_t bt = (uint8_t)chr;
         switch ( bt ) {
             case 0xF6: bt = 0x94; break;
@@ -179,7 +194,6 @@ PNTR_PIXELFONTS_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
     characters[254] = '\0'; // Null-terminate the string.
 
     // Use TTY to build the remaining font parameters.
-
     pntr_font* output = pntr_load_font_tty_from_image(atlas, (int)pixelfont.char_width, (int)pixelfont.char_height, characters);
     if (output == NULL) {
         pntr_unload_image(atlas);
@@ -193,5 +207,5 @@ PNTR_PIXELFONTS_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
 }
 #endif
 
-#endif  // PNTR_PIXELFONTS_IMPLEMENTATION_ONCE
-#endif  // PNTR_PIXELFONTS_IMPLEMENTATION
+#endif  // PNTR_PIXELFONT_IMPLEMENTATION_ONCE
+#endif  // PNTR_PIXELFONT_IMPLEMENTATION

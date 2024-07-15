@@ -1,56 +1,81 @@
-# pntr_tiled
+# pntr_pixelfont
 
-Use [Tiled](https://www.mapeditor.org) maps in [pntr](https://github.com/RobLoach/pntr), with [cute_tiled](https://github.com/RandyGaul/cute_headers/blob/master/cute_tiled.h).
+Additional small pixel fonts from [uGUI](https://github.com/achimdoebler/UGUI) for use in [pntr](https://github.com/RobLoach/pntr).
 
-![Screenshot of pntr_tiled_example](examples/pntr_tiled_example.png)
+## API
+
+``` c
+pntr_font* pntr_load_pixelfont(pntr_pixelfont font);
+pntr_vector pntr_pixelfont_size(pntr_pixelfont font);
+```
+
+## Fonts
+
+The following pixel font sizes are available: 4x6, 5x8, 5x12, 6x8, 6x10, 7x12, 8x8, 8x12.
+
+### `PNTR_PIXELFONT_4X6`
+
+![4x6 Font](test/pntr_pixelfont_test_4x6.png)
+
+### `PNTR_PIXELFONT_5x8`
+
+![5x8 Font](test/pntr_pixelfont_test_5x8.png)
+
+### `PNTR_PIXELFONT_5x12`
+
+![5x12 Font](test/pntr_pixelfont_test_5x12.png)
+
+### `PNTR_PIXELFONT_6x8`
+
+![6x8 Font](test/pntr_pixelfont_test_6x8.png)
+
+### `PNTR_PIXELFONT_6x10`
+
+![6x10 Font](test/pntr_pixelfont_test_6x10.png)
+
+### `PNTR_PIXELFONT_7x12`
+
+![7x12 Font](test/pntr_pixelfont_test_7x12.png)
+
+### `PNTR_PIXELFONT_8x8`
+
+![8x8 Font](test/pntr_pixelfont_test_8x8.png)
+
+### `PNTR_PIXELFONT_8x12`
+
+![8x12 Font](test/pntr_pixelfont_test_8x12.png)
 
 ## Usage
 
 ``` c
-#define PNTR_TILED_IMPLEMENTATION
-#include "pntr_tiled.h"
+#define PNTR_PIXELFONT_FONT_IMPLEMENTATION
+#define PNTR_PIXELFONT_ENABLE_ALL
+// #define PNTR_PIXELFONT_ENABLE_4X6
+// #define PNTR_PIXELFONT_ENABLE_5X8
+// #define PNTR_PIXELFONT_ENABLE_5X12
+// #define PNTR_PIXELFONT_ENABLE_6X8
+// #define PNTR_PIXELFONT_ENABLE_6X10
+// #define PNTR_PIXELFONT_ENABLE_7X12
+// #define PNTR_PIXELFONT_ENABLE_8X8
+// #define PNTR_PIXELFONT_ENABLE_8X12
+#include "pntr_pixelfont.h"
 
 int main() {
-    // Load the Tiled JSON file
-    cute_tiled_map_t* map = pntr_load_tiled("mymap.json");
+    // Load one of the pixel fonts.
+    pntr_font* font = pntr_load_pixelfont(PNTR_PIXELFONT_8X12);
 
-    // Generate an image of the Tiled map
-    pntr_image* image = pntr_gen_image_tiled(map, PNTR_WHITE);
+    // Generate an image with the text in it.
+    pntr_image* image = pntr_gen_image_text(font, "Hello, World!", PNTR_BLACK, PNTR_RAYWHITE);
 
-    // Save the image as a PNG
-    pntr_save_image(image, "world.png");
+    // Save the image locally.
+    pntr_save_image(image, "pntr_pixelfont_8x12.png");
+
+    // Unload the font and image.
+    pntr_unload_image(image);
+    pntr_unload_font(font);
 
     return 0;
 }
-```
-
-### Features
-
-- [x] Tile Layers
-- [x] Image Layers
-- [x] Group Layers
-- [ ] Object Layers
-- [x] Animated Tiles
-- [x] Flipped/Rotated Tiles
-
-### API
-
-``` c
-cute_tiled_map_t* pntr_load_tiled(const char* fileName);
-cute_tiled_map_t* pntr_load_tiled_from_memory(const unsigned char *fileData, unsigned int dataSize, const char* baseDir);
-void pntr_unload_tiled(cute_tiled_map_t* map);
-void pntr_draw_tiled(pntr_image* dst, cute_tiled_map_t* map, int posX, int posY, pntr_color tint);
-void pntr_draw_tiled_tile(pntr_image* dst, cute_tiled_map_t* map, int gid, int posX, int posY, pntr_color tint);
-void pntr_draw_tiled_layer_imagelayer(pntr_image* dst, cute_tiled_map_t* map, cute_tiled_layer_t* layer, int posX, int posY, pntr_color tint);
-void pntr_draw_tiled_layer_tilelayer(pntr_image* dst, cute_tiled_map_t* map, cute_tiled_layer_t* layer, int posX, int posY, pntr_color tint);
-pntr_image* pntr_tiled_tile_image(cute_tiled_map_t* map, int gid);
-pntr_image* pntr_gen_image_tiled(cute_tiled_map_t* map, pntr_color tint);
-void pntr_update_tiled(cute_tiled_map_t* map, float deltaTime);
-cute_tiled_layer_t* pntr_tiled_layer(cute_tiled_map_t* map, const char* name);
-int pntr_layer_tile(cute_tiled_layer_t* layer, int column, int row);
-void pntr_set_layer_tile(cute_tiled_layer_t* layer, int column, int row, int gid);
-pntr_vector pntr_layer_tile_from_position(cute_tiled_map_t* map, cute_tiled_layer_t* layer, int posX, int posY);
-cute_tiled_map_t* pntr_load_tiled_from_assetsys(assetsys_t* sys, const char* fileName);
 ```
 
 ## License
