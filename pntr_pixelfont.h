@@ -118,8 +118,6 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
 
     // Get the font.
     const pntr_pixelfont_font* pixelfont = &PNTR_PIXELFONT_FONTS[font];
-
-    printf("Font: %d\n", font);
     if (pixelfont->data == NULL) {
         return pntr_set_error(PNTR_ERROR_NOT_SUPPORTED);
     }
