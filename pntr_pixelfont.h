@@ -143,7 +143,7 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
 
     for (int chr = 0; chr < 255; chr++) {
         uint8_t bt = (uint8_t)chr;
-        switch ( bt ) {
+        switch (bt) {
             case 0xF6: bt = 0x94; break;
             case 0xD6: bt = 0x99; break;
             case 0xFC: bt = 0x81; break;
@@ -154,30 +154,21 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
             case 0xB0: bt = 0xF8; break;
         }
 
-        uint8_t b;
-        int bn = pixelfont->char_width;
+        int bn = (int)pixelfont->char_width;
+        if (!bn) continue;
         bn >>= 3;
-        if ( pixelfont->char_width % 8 ) bn++;
+        if (pixelfont->char_width % 8) bn++;
 
-        int index = (bt - 0) * pixelfont->char_height * bn;
-        for( int j=0;j<pixelfont->char_height;j++ )
-        {
-            int c=pixelfont->char_width;
-            for(int  i=0;i<bn;i++ )
-            {
-                b = pixelfont->data[index++];
-                for(int k=0;(k<8) && c;k++ )
-                {
-                    if( b & 0x01 )
-                    {
-                        //push_pixel(fc);
-                        pntr_draw_point(atlas, chr * pixelfont->char_width + k, j, PNTR_WHITE);
-                        //pntr_draw_point(atlas, x + pixelfont.char_width - 1, y + pixelfont.char_height - 1, PNTR_WHITE);
+        int index = bt * pixelfont->char_height * bn;
+        for (int j = 0; j < pixelfont->char_height; j++) {
+            int c = pixelfont->char_width;
+            for (int i = 0; i < bn; i++) {
+                uint8_t b = pixelfont->data[index++];
+                for (int k = 0; (k < 8) && c; k++) {
+                    if (b & 0x01) {
+                        pntr_draw_point(atlas, (chr * pixelfont->char_width) + k, j, PNTR_WHITE);
                     }
-                    else
-                    {
-                        //push_pixel(bc);
-                    }
+
                     b >>= 1;
                     c--;
                 }
