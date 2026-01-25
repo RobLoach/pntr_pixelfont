@@ -44,11 +44,11 @@ extern const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[];
 #ifndef PNTR_PIXELFONT_ENABLE_8X14
 #define PNTR_PIXELFONT_ENABLE_8X14
 #endif
-#ifndef PNTR_PIXELFONT_ENABLE_10X16
-#define PNTR_PIXELFONT_ENABLE_10X16
-#endif
 
 // TODO: Fix the following fonts.
+// #ifndef PNTR_PIXELFONT_ENABLE_10X16
+// #define PNTR_PIXELFONT_ENABLE_10X16
+// #endif
 // #ifndef PNTR_PIXELFONT_ENABLE_12X16
 // #define PNTR_PIXELFONT_ENABLE_12X16
 // #endif
