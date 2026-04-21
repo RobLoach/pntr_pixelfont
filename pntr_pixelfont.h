@@ -52,15 +52,13 @@ typedef enum pntr_pixelfont {
     PNTR_PIXELFONT_8X8,
     PNTR_PIXELFONT_8X12,
     PNTR_PIXELFONT_8X14,
-
-    // TODO: Fix the following fonts.
-    // PNTR_PIXELFONT_10X16,
-    // PNTR_PIXELFONT_12X16,
-    // PNTR_PIXELFONT_12X20,
-    // PNTR_PIXELFONT_16X26,
-    // PNTR_PIXELFONT_22X36,
-    // PNTR_PIXELFONT_24X40,
-    // PNTR_PIXELFONT_32X53,
+    PNTR_PIXELFONT_10X16,
+    PNTR_PIXELFONT_12X16,
+    PNTR_PIXELFONT_12X20,
+    PNTR_PIXELFONT_16X26,
+    PNTR_PIXELFONT_22X36,
+    PNTR_PIXELFONT_24X40,
+    PNTR_PIXELFONT_32X53,
     PNTR_PIXELFONT_LAST
 } pntr_pixelfont;
 
@@ -166,7 +164,7 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
                 uint8_t b = pixelfont->data[index++];
                 for (int k = 0; (k < 8) && c; k++) {
                     if (b & 0x01) {
-                        pntr_draw_point(atlas, (chr * pixelfont->char_width) + k, j, PNTR_WHITE);
+                        pntr_draw_point(atlas, (chr * pixelfont->char_width) + (i * 8) + k, j, PNTR_WHITE);
                     }
 
                     b >>= 1;
