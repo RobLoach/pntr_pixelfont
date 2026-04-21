@@ -118,6 +118,15 @@ int main() {
 }
 ```
 
+## Customization
+
+You can change pntr's default font by defining the callback.
+
+```c
+#define PNTR_PIXELFONT_DEFAULT PNTR_PIXELFONT_8X8
+#define PNTR_DEFAULT_FONT pntr_load_pixelfont_default
+```
+
 ## License
 
 Unless stated otherwise, all works are:

@@ -72,6 +72,17 @@ typedef enum pntr_pixelfont {
 PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font);
 
 /**
+ * Load the default pixel font (4x6).
+ *
+ * Define PNTR_DEFAULT_FONT as pntr_load_pixelfont_default to use this as
+ * pntr's default font. Include pntr_pixelfont.h before defining PNTR_IMPLEMENTATION
+ * in pntr.h to activate this automatically.
+ *
+ * @return The loaded 4x6 font, or NULL on failure.
+ */
+PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont_default(void);
+
+/**
  * Get the size of one character of the given pixel font.
  *
  * @param font The pixel font to get the character size of.
@@ -96,6 +107,13 @@ PNTR_PIXELFONT_API pntr_vector pntr_pixelfont_size(pntr_pixelfont font);
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont_default(void) {
+    #ifndef PNTR_PIXELFONT_DEFAULT
+    #define PNTR_PIXELFONT_DEFAULT PNTR_PIXELFONT_4X6
+    #endif
+    return pntr_load_pixelfont(PNTR_PIXELFONT_DEFAULT);
+}
 
 PNTR_PIXELFONT_API pntr_vector pntr_pixelfont_size(pntr_pixelfont font) {
     if (font < PNTR_PIXELFONT_FIRST || font >= PNTR_PIXELFONT_LAST) {
@@ -129,17 +147,7 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
         return pntr_set_error(PNTR_ERROR_NO_MEMORY);
     }
 
-    // Iterate through all the characters and draw them manually.
-    // const uint8_t* bitmap = data + i;
-    // for (int x = 0; x < pixelfont.char_width; x++) {
-    //     for (int y = 0; y < pixelfont.char_height; y++) {
-    //         if (bitmap[y] & 1 << x) {
-    //             pntr_draw_point(atlas, pixelfont.char_width * i + x, y, PNTR_WHITE);
-    //         }
-    //     }
-    // }
-
-    for (int chr = 0; chr < 255; chr++) {
+    for (int chr = 0; chr < 254; chr++) {
         uint8_t bt = (uint8_t)chr;
         switch (bt) {
             case 0xF6: bt = 0x94; break;

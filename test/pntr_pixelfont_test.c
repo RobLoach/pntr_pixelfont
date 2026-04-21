@@ -1,15 +1,26 @@
 #include <string.h> // sprintf
 
+// Switch the default font.
+#define PNTR_DEFAULT_FONT pntr_load_pixelfont_default
+
+#include "pntr.h"
+#define PNTR_PIXELFONT_ENABLE_ALL
+#include "pntr_pixelfont.h"
+
 #define PNTR_IMPLEMENTATION
 #include "pntr.h"
 #include "pntr_assert.h"
 
-#define PNTR_PIXELFONT_ENABLE_ALL
 #define PNTR_PIXELFONT_IMPLEMENTATION
 #include "pntr_pixelfont.h"
 
 int main() {
     char name[256];
+
+    // Verify pntr_load_font_default() returns the 4x6 pixelfont via PNTR_DEFAULT_FONT.
+    pntr_font* defaultFont = pntr_load_font_default();
+    pntr_assert(defaultFont != NULL);
+    pntr_unload_font(defaultFont);
 
     // Iterate through all available fonts.
     for (int i = PNTR_PIXELFONT_FIRST; i < PNTR_PIXELFONT_LAST; i++) {
