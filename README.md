@@ -11,71 +11,26 @@ pntr_vector pntr_pixelfont_size(pntr_pixelfont font);
 
 ## Fonts
 
-The following pixel font sizes are available: 4x6, 5x8, 5x12, 6x8, 6x10, 7x12, 8x8, 8x12, 8x14, 10x16, 12x16, 12x20, 16x26, 22x36, 24x40, 32x53.
+The following pixel fonts are available:
 
-### `PNTR_PIXELFONT_4X6`
+- `PNTR_PIXELFONT_4X6`
+- `PNTR_PIXELFONT_5X8`
+- `PNTR_PIXELFONT_5X12`
+- `PNTR_PIXELFONT_6X8`
+- `PNTR_PIXELFONT_6X10`
+- `PNTR_PIXELFONT_7X12`
+- `PNTR_PIXELFONT_8X8`
+- `PNTR_PIXELFONT_8X12`
+- `PNTR_PIXELFONT_8X14`
+- `PNTR_PIXELFONT_10X16`
+- `PNTR_PIXELFONT_12X16`
+- `PNTR_PIXELFONT_12X20`
+- `PNTR_PIXELFONT_16X26`
+- `PNTR_PIXELFONT_22X36`
+- `PNTR_PIXELFONT_24X40`
+- `PNTR_PIXELFONT_32X53`
 
-![4x6 Font](test/pntr_pixelfont_test_4x6.png)
-
-### `PNTR_PIXELFONT_5X8`
-
-![5x8 Font](test/pntr_pixelfont_test_5x8.png)
-
-### `PNTR_PIXELFONT_5X12`
-
-![5x12 Font](test/pntr_pixelfont_test_5x12.png)
-
-### `PNTR_PIXELFONT_6X8`
-
-![6x8 Font](test/pntr_pixelfont_test_6x8.png)
-
-### `PNTR_PIXELFONT_6X10`
-
-![6x10 Font](test/pntr_pixelfont_test_6x10.png)
-
-### `PNTR_PIXELFONT_7X12`
-
-![7x12 Font](test/pntr_pixelfont_test_7x12.png)
-
-### `PNTR_PIXELFONT_8X8`
-
-![8x8 Font](test/pntr_pixelfont_test_8x8.png)
-
-### `PNTR_PIXELFONT_8X12`
-
-![8x12 Font](test/pntr_pixelfont_test_8x12.png)
-
-### `PNTR_PIXELFONT_8X14`
-
-![8x14 Font](test/pntr_pixelfont_test_8x14.png)
-
-### `PNTR_PIXELFONT_10X16`
-
-![10x16 Font](test/pntr_pixelfont_test_10x16.png)
-
-### `PNTR_PIXELFONT_12X16`
-
-![12x16 Font](test/pntr_pixelfont_test_12x16.png)
-
-### `PNTR_PIXELFONT_12X20`
-
-![12x20 Font](test/pntr_pixelfont_test_12x20.png)
-
-### `PNTR_PIXELFONT_16X26`
-
-![16x26 Font](test/pntr_pixelfont_test_16x26.png)
-
-### `PNTR_PIXELFONT_22X36`
-
-![22x36 Font](test/pntr_pixelfont_test_22x36.png)
-
-### `PNTR_PIXELFONT_24X40`
-
-![24x40 Font](test/pntr_pixelfont_test_24x40.png)
-
-### `PNTR_PIXELFONT_32X53`
-
-![32x53 Font](test/pntr_pixelfont_test_32x53.png)
+![Fonts](test/pntr_pixelfont_test.png)
 
 ## Usage
 
