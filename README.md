@@ -108,6 +108,11 @@ int main() {
 If you do not want to replace pntr's default font, drop step 1 and the
 `pntr_load_font_default()` lines; steps 2 through 5 stay exactly as they are.
 
+The same program lives at
+[`examples/pntr_pixelfont_example.c`](examples/pntr_pixelfont_example.c), which
+is built by default and with `-DPNTR_PIXELFONT_BUILD_EXAMPLES=ON`, so the
+include order above is checked by a compiler.
+
 ## License
 
 Unless stated otherwise, all works are:

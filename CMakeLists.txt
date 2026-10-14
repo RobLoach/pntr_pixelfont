@@ -17,8 +17,13 @@ else()
     set(PNTR_PIXELFONT_IS_MAIN FALSE)
 endif()
 
+option(PNTR_PIXELFONT_BUILD_EXAMPLES "pntr_pixelfont: Examples" ${PNTR_PIXELFONT_IS_MAIN})
 option(PNTR_PIXELFONT_BUILD_TESTS "pntr_pixelfont: Tests" ${PNTR_PIXELFONT_IS_MAIN})
 
+# Findpntr.cmake, shared by the examples and the tests.
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/.cmake)
+
+# Examples
 if (PNTR_PIXELFONT_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
