@@ -36,6 +36,21 @@ every one of them.
 
 ![Fonts](test/pntr_pixelfont_test.png)
 
+## Character set
+
+Every font covers **printable ASCII only**: `0x20` (space) through `0x7E`
+(tilde), 95 glyphs. That is the same range as pntr's own default font. Any
+other character is skipped when drawing and when measuring, apart from `\n`,
+which pntr itself handles as a line break.
+
+The uGUI tables these fonts come from hold 256 single-byte glyphs in a
+CP437-like arrangement, so there are accented letters and box-drawing
+characters in the data. They are not exposed, because a caller can only pick a
+glyph through the bytes of the string it draws, and there is no way to name a
+glyph above `0x7F` from a UTF-8 string literal with raw single-byte tables.
+Restricting the font to ASCII also means it behaves the same whether or not
+pntr was built with `PNTR_ENABLE_UTF8`.
+
 ## Usage
 
 `pntr_pixelfont.h` does not include [pntr](https://github.com/RobLoach/pntr)

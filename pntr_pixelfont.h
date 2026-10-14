@@ -65,6 +65,17 @@ typedef enum pntr_pixelfont {
 /**
  * Load a pixel font.
  *
+ * The loaded font covers printable ASCII only: 0x20 (space) through 0x7E
+ * (tilde), 95 glyphs, which is the same range as pntr's own default font.
+ * Any other character is skipped when drawing and measuring.
+ *
+ * The uGUI tables behind these fonts hold 256 raw single-byte glyphs in a
+ * CP437-like arrangement, but a caller can only ask for a glyph through the
+ * bytes of the string it draws. Codes above 0x7F would need a UTF-8 encoding
+ * that raw byte tables cannot express, so they are not emitted. Keeping to
+ * ASCII also makes the font identical whether or not pntr was built with
+ * PNTR_ENABLE_UTF8, and keeps the atlas to 95 columns instead of 255.
+ *
  * @param font The pixel font to load.
  *
  * @return The loaded font, or NULL on failure, or if the font is not supported.
@@ -104,6 +115,16 @@ PNTR_PIXELFONT_API pntr_vector pntr_pixelfont_size(pntr_pixelfont font);
 #define PNTR_PIXELFONT_DATA_IMPLEMENTATION
 #include "pntr_pixelfont_data.h"
 
+/**
+ * The first glyph of a uGUI table that pntr_load_pixelfont() emits: space.
+ */
+#define PNTR_PIXELFONT_FIRST_CHARACTER 0x20
+
+/**
+ * How many glyphs pntr_load_pixelfont() emits: 0x20 through 0x7E inclusive.
+ */
+#define PNTR_PIXELFONT_CHARACTERS_LEN 95
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -138,41 +159,34 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
         return pntr_set_error(PNTR_ERROR_NOT_SUPPORTED);
     }
 
-    // Create the font atlas.
+    // How many bytes one row of one glyph takes up in the font data. The uGUI
+    // tables pack each row into ceil(char_width / 8) bytes, so a glyph is
+    // ceil(char_width / 8) * char_height bytes long.
+    int bytesPerRow = ((int)pixelfont->char_width + 7) / 8;
+    if (bytesPerRow <= 0) {
+        return pntr_set_error(PNTR_ERROR_INVALID_ARGS);
+    }
+
+    // Create the font atlas, one column per printable ASCII glyph.
     pntr_image* atlas = pntr_gen_image_color(
-        pixelfont->char_width * 255,
+        pixelfont->char_width * PNTR_PIXELFONT_CHARACTERS_LEN,
         pixelfont->char_height,
         PNTR_BLANK);
     if (atlas == NULL) {
         return pntr_set_error(PNTR_ERROR_NO_MEMORY);
     }
 
-    for (int chr = 0; chr < 254; chr++) {
-        uint8_t bt = (uint8_t)chr;
-        switch (bt) {
-            case 0xF6: bt = 0x94; break;
-            case 0xD6: bt = 0x99; break;
-            case 0xFC: bt = 0x81; break;
-            case 0xDC: bt = 0x9A; break;
-            case 0xE4: bt = 0x84; break;
-            case 0xC4: bt = 0x8E; break;
-            case 0xB5: bt = 0xE6; break;
-            case 0xB0: bt = 0xF8; break;
-        }
-
-        int bn = (int)pixelfont->char_width;
-        if (!bn) continue;
-        bn >>= 3;
-        if (pixelfont->char_width % 8) bn++;
-
-        int index = bt * pixelfont->char_height * bn;
+    // Copy glyphs 0x20 through 0x7E of the table into columns 0 through 94.
+    for (int column = 0; column < PNTR_PIXELFONT_CHARACTERS_LEN; column++) {
+        int glyph = PNTR_PIXELFONT_FIRST_CHARACTER + column;
+        int index = glyph * pixelfont->char_height * bytesPerRow;
         for (int j = 0; j < pixelfont->char_height; j++) {
             int c = pixelfont->char_width;
-            for (int i = 0; i < bn; i++) {
+            for (int i = 0; i < bytesPerRow; i++) {
                 uint8_t b = pixelfont->data[index++];
                 for (int k = 0; (k < 8) && c; k++) {
                     if (b & 0x01) {
-                        pntr_draw_point(atlas, (chr * pixelfont->char_width) + (i * 8) + k, j, PNTR_WHITE);
+                        pntr_draw_point(atlas, (column * pixelfont->char_width) + (i * 8) + k, j, PNTR_WHITE);
                     }
 
                     b >>= 1;
@@ -182,13 +196,14 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
         }
     }
 
-    // Build the character set.
-    char characters[255];
-    characters[0] = (char)255; // First character is blank.
-    for (int i = 1; i < 254; i++) {
-        characters[i] = (char)(i);
+    // Build the matching character set: one ASCII code per atlas column. Every
+    // byte here is below 0x80, so PNTR_STRLEN counts the same 95 characters
+    // whether or not pntr redefined it to utf8len via PNTR_ENABLE_UTF8.
+    char characters[PNTR_PIXELFONT_CHARACTERS_LEN + 1];
+    for (int i = 0; i < PNTR_PIXELFONT_CHARACTERS_LEN; i++) {
+        characters[i] = (char)(PNTR_PIXELFONT_FIRST_CHARACTER + i);
     }
-    characters[254] = '\0'; // Null-terminate the string.
+    characters[PNTR_PIXELFONT_CHARACTERS_LEN] = '\0'; // Null-terminate the string.
 
     // Use TTY to build the remaining font parameters.
     pntr_font* output = pntr_load_font_tty_from_image(atlas, (int)pixelfont->char_width, (int)pixelfont->char_height, characters);

@@ -1,4 +1,10 @@
-#include <stdio.h> // sprintf
+#include <stdio.h> // sprintf, printf
+
+// A string covering every printable ASCII character the fonts support.
+#define PNTR_PIXELFONT_SAMPLE \
+    " !\"#$%&'()*+,-./0123456789:;<=>?@" \
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`" \
+    "abcdefghijklmnopqrstuvwxyz{|}~"
 
 // Switch the default font.
 #define PNTR_DEFAULT_FONT pntr_load_pixelfont_default
@@ -33,6 +39,21 @@ int main() {
 
         // Generate an image with the text, labelled with the font size.
         pntr_vector size = pntr_pixelfont_size(i);
+
+        // The atlas only carries printable ASCII, 0x20 through 0x7E. This holds
+        // identically with and without PNTR_ENABLE_UTF8, because every
+        // character in the set is a single byte below 0x80.
+        pntr_assert(font->charactersLen == 95);
+        pntr_assert(font->atlas->width == size.x * 95);
+        pntr_assert(font->atlas->height == size.y);
+
+        // pntr_measure_text() has to agree byte-for-byte across that option too.
+        pntr_vector measured = pntr_measure_text_ex(font, PNTR_PIXELFONT_SAMPLE, 0);
+        printf("%dx%d charactersLen=%d atlas=%dx%d measure=%dx%d\n",
+            size.x, size.y, font->charactersLen,
+            font->atlas->width, font->atlas->height,
+            measured.x, measured.y);
+
         sprintf(text, "%dx%d  The quick brown fox jumps over the lazy dog!", size.x, size.y);
         rows[i] = pntr_gen_image_text(font, text, PNTR_BLACK, PNTR_RAYWHITE);
         pntr_assert(rows[i] != NULL);
