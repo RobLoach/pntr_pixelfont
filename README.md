@@ -113,6 +113,37 @@ The same program lives at
 is built by default and with `-DPNTR_PIXELFONT_BUILD_EXAMPLES=ON`, so the
 include order above is checked by a compiler.
 
+## Adding a font
+
+The bitmap data lives in `pntr_pixelfont_data.h`, which is roughly 96% of this
+repository and is **generated**, not hand-written. It is a one-time mechanical
+conversion of the font tables in [uGUI](https://github.com/achimdoebler/UGUI)'s
+`ugui.c`, so there is no upstream version to bump. You do not need to read the
+4000-odd lines of bytes:
+
+- The header comment at the top of `pntr_pixelfont_data.h` records where every
+  table came from, which uGUI commit the bytes match, uGUI's licence terms, the
+  glyph byte layout, and which uGUI font was deliberately left out.
+- [`tools/convert_ugui_fonts.py`](tools/convert_ugui_fonts.py) regenerates the
+  file. Run it with `--check` to confirm the committed data still matches
+  upstream:
+
+  ``` sh
+  git clone https://github.com/achimdoebler/UGUI /tmp/ugui
+  tools/convert_ugui_fonts.py /tmp/ugui/ugui.c --check
+  ```
+
+To add a font, add the table to `ugui.c`'s format and re-run the generator, or
+add it to the generator's output by the same shape, then add the matching
+`PNTR_PIXELFONT_*` entry to the `pntr_pixelfont` enum in `pntr_pixelfont.h`.
+The enum order has to match the order of the `PNTR_PIXELFONT_FONTS[]` table,
+because `pntr_load_pixelfont()` indexes straight into it.
+
+The one thing to get right is the glyph stride. Each glyph is
+`ceil(char_width / 8) * char_height` bytes, laid out as `char_height` rows of
+`ceil(char_width / 8)` bytes with the least significant bit leftmost. Every
+font wider than 8 pixels rendered as garbage until that was fixed in `adde55a`.
+
 ## License
 
 Unless stated otherwise, all works are:

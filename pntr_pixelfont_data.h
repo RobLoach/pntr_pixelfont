@@ -1,3 +1,72 @@
+/**********************************************************************************************
+*
+*   pntr_pixelfont_data.h - Bitmap font tables for pntr_pixelfont.
+*
+*   GENERATED FILE. Do not hand-edit. Regenerate with:
+*
+*       git clone https://github.com/achimdoebler/UGUI /tmp/ugui
+*       tools/convert_ugui_fonts.py /tmp/ugui/ugui.c -o pntr_pixelfont_data.h
+*
+*   See tools/convert_ugui_fonts.py for the full description of the conversion.
+*
+*   ORIGIN
+*
+*   Every PNTR_PIXELFONT_FONT_* array below is a verbatim copy of one
+*   `__UG_FONT_DATA unsigned char font_<w>x<h>[256][...]` table from the single
+*   file `ugui.c` in uGUI:
+*
+*       https://github.com/achimdoebler/UGUI
+*
+*   uGUI publishes no tags or releases. The tables here are byte-for-byte (in
+*   fact character-for-character, trailing `// 0xNN` comments included)
+*   identical to `ugui.c` at commit:
+*
+*       80a4aa755d5836ca576f30d47fb76d9500546818  ("V0.31 beta", 2015-12-20)
+*
+*   That is the most recent commit in uGUI's history to touch `ugui.c`, so it
+*   is also the content of `ugui.c` on uGUI's master today; master's own tip,
+*   ce0bccb5b7d4877c42081419fccadf7aa5727303 (2016-01-02), only edits
+*   README.md. Verified by fetching uGUI and diffing all 16 tables on
+*   2026-10-14.
+*
+*   Which commit the original conversion was actually run against is not
+*   recorded anywhere and cannot be recovered from this repository; any uGUI
+*   checkout from 80a4aa7 onwards gives the same bytes. Likewise there was no
+*   generator script in the repo before this one, so whether the first
+*   conversion was scripted or done by hand is unknown -
+*   tools/convert_ugui_fonts.py is a reconstruction, verified by regenerating
+*   this file and diffing it against what was committed.
+*
+*   LAYOUT
+*
+*   The byte layout is uGUI's, unchanged. For a font of char_width by
+*   char_height:
+*
+*       bytesPerRow = ceil(char_width / 8)
+*       glyph stride = bytesPerRow * char_height
+*       glyph N starts at N * bytesPerRow * char_height
+*
+*   Each row is bytesPerRow bytes, least significant bit leftmost. The second
+*   array dimension below is the glyph stride, so PNTR_PIXELFONT_FONT_10x16 is
+*   [256][32] because ceil(10 / 8) * 16 == 32. pntr_load_pixelfont() recomputes
+*   that same stride; mismatching it is what made the fonts wider than 8 pixels
+*   render as garbage in issue #1, fixed in adde55a.
+*
+*   Only glyphs 0x20 through 0x7E are ever read out of these tables. The rest
+*   of each table is kept as it came from uGUI, but is not reachable through
+*   pntr_load_pixelfont(); see the comment on that function in
+*   pntr_pixelfont.h.
+*
+*   LICENSE
+*
+*   uGUI is (C) 2015 Achim Döbler, all rights reserved, under uGUI's own terms:
+*   free software, no warranty, no restriction on use, and redistributions of
+*   source code must retain the copyright notice. The full notice is in
+*   LICENSE.md of the uGUI repository linked above. The copyright notice is
+*   retained at the top of pntr_pixelfont.h.
+*
+**********************************************************************************************/
+
 #ifndef PNTR_PIXELFONT_FONT_H_
 #define PNTR_PIXELFONT_FONT_H_
 
@@ -44,7 +113,6 @@ extern const pntr_pixelfont_font PNTR_PIXELFONT_FONTS[];
 #ifndef PNTR_PIXELFONT_ENABLE_8X14
 #define PNTR_PIXELFONT_ENABLE_8X14
 #endif
-
 #ifndef PNTR_PIXELFONT_ENABLE_10X16
 #define PNTR_PIXELFONT_ENABLE_10X16
 #endif
