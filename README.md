@@ -148,8 +148,14 @@ font wider than 8 pixels rendered as garbage until that was fixed in `adde55a`.
 
 Unless stated otherwise, all works are:
 
-- Copyright (c) 2023 [Rob Loach](https://robloach.net)
+- Copyright (c) 2023-2026 [Rob Loach](https://robloach.net)
 
 ... and licensed under:
 
 - [zlib License](LICENSE)
+
+The font data in `pntr_pixelfont_data.h` comes from
+[uGUI](https://github.com/achimdoebler/UGUI), Copyright (C) 2015, Achim Döbler,
+all rights reserved, and is used under uGUI's license terms: free software with
+NO WARRANTY, no restriction on use, and redistributions of source code must
+retain the copyright notice. See the third-party notice in [LICENSE](LICENSE).

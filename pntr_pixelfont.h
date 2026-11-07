@@ -2,7 +2,7 @@
 *
 *   pntr_pixelfont - Additional pixel fonts for pntr, with fonts from uGUI.
 *
-*   Copyright 2024 Rob Loach (@RobLoach)
+*   Copyright 2023-2026 Rob Loach (@RobLoach)
 *   Copyright (C) 2015, Achim Döbler, all rights reserved.
 *
 *   DEPENDENCIES:
