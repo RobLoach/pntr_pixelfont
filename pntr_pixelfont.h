@@ -83,13 +83,16 @@ typedef enum pntr_pixelfont {
 PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font);
 
 /**
- * Load the default pixel font (4x6).
+ * Load the default pixel font: PNTR_PIXELFONT_DEFAULT, or 4x6 if not defined.
+ *
+ * The default font is always compiled in, whether or not its
+ * PNTR_PIXELFONT_ENABLE_* macro is defined.
  *
  * Define PNTR_DEFAULT_FONT as pntr_load_pixelfont_default to use this as
  * pntr's default font. Include pntr_pixelfont.h before defining PNTR_IMPLEMENTATION
  * in pntr.h to activate this automatically.
  *
- * @return The loaded 4x6 font, or NULL on failure.
+ * @return The loaded default font, or NULL on failure.
  */
 PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont_default(void);
 
@@ -112,6 +115,78 @@ PNTR_PIXELFONT_API pntr_vector pntr_pixelfont_size(pntr_pixelfont font);
 #ifndef PNTR_PIXELFONT_IMPLEMENTATION_ONCE
 #define PNTR_PIXELFONT_IMPLEMENTATION_ONCE
 
+// The default font is always compiled in, so pntr_load_pixelfont_default()
+// never fails for want of a PNTR_PIXELFONT_ENABLE_* define. The preprocessor
+// cannot see the enum, so its names are mapped to their values just for this.
+#ifndef PNTR_PIXELFONT_DEFAULT
+    #define PNTR_PIXELFONT_DEFAULT PNTR_PIXELFONT_4X6
+#endif
+#define PNTR_PIXELFONT_4X6 0
+#define PNTR_PIXELFONT_5X8 1
+#define PNTR_PIXELFONT_5X12 2
+#define PNTR_PIXELFONT_6X8 3
+#define PNTR_PIXELFONT_6X10 4
+#define PNTR_PIXELFONT_7X12 5
+#define PNTR_PIXELFONT_8X8 6
+#define PNTR_PIXELFONT_8X12 7
+#define PNTR_PIXELFONT_8X14 8
+#define PNTR_PIXELFONT_10X16 9
+#define PNTR_PIXELFONT_12X16 10
+#define PNTR_PIXELFONT_12X20 11
+#define PNTR_PIXELFONT_16X26 12
+#define PNTR_PIXELFONT_22X36 13
+#define PNTR_PIXELFONT_24X40 14
+#define PNTR_PIXELFONT_32X53 15
+#if PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_4X6 && !defined(PNTR_PIXELFONT_ENABLE_4X6)
+    #define PNTR_PIXELFONT_ENABLE_4X6
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_5X8 && !defined(PNTR_PIXELFONT_ENABLE_5X8)
+    #define PNTR_PIXELFONT_ENABLE_5X8
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_5X12 && !defined(PNTR_PIXELFONT_ENABLE_5X12)
+    #define PNTR_PIXELFONT_ENABLE_5X12
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_6X8 && !defined(PNTR_PIXELFONT_ENABLE_6X8)
+    #define PNTR_PIXELFONT_ENABLE_6X8
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_6X10 && !defined(PNTR_PIXELFONT_ENABLE_6X10)
+    #define PNTR_PIXELFONT_ENABLE_6X10
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_7X12 && !defined(PNTR_PIXELFONT_ENABLE_7X12)
+    #define PNTR_PIXELFONT_ENABLE_7X12
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_8X8 && !defined(PNTR_PIXELFONT_ENABLE_8X8)
+    #define PNTR_PIXELFONT_ENABLE_8X8
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_8X12 && !defined(PNTR_PIXELFONT_ENABLE_8X12)
+    #define PNTR_PIXELFONT_ENABLE_8X12
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_8X14 && !defined(PNTR_PIXELFONT_ENABLE_8X14)
+    #define PNTR_PIXELFONT_ENABLE_8X14
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_10X16 && !defined(PNTR_PIXELFONT_ENABLE_10X16)
+    #define PNTR_PIXELFONT_ENABLE_10X16
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_12X16 && !defined(PNTR_PIXELFONT_ENABLE_12X16)
+    #define PNTR_PIXELFONT_ENABLE_12X16
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_12X20 && !defined(PNTR_PIXELFONT_ENABLE_12X20)
+    #define PNTR_PIXELFONT_ENABLE_12X20
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_16X26 && !defined(PNTR_PIXELFONT_ENABLE_16X26)
+    #define PNTR_PIXELFONT_ENABLE_16X26
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_22X36 && !defined(PNTR_PIXELFONT_ENABLE_22X36)
+    #define PNTR_PIXELFONT_ENABLE_22X36
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_24X40 && !defined(PNTR_PIXELFONT_ENABLE_24X40)
+    #define PNTR_PIXELFONT_ENABLE_24X40
+#elif PNTR_PIXELFONT_DEFAULT == PNTR_PIXELFONT_32X53 && !defined(PNTR_PIXELFONT_ENABLE_32X53)
+    #define PNTR_PIXELFONT_ENABLE_32X53
+#endif
+#undef PNTR_PIXELFONT_4X6
+#undef PNTR_PIXELFONT_5X8
+#undef PNTR_PIXELFONT_5X12
+#undef PNTR_PIXELFONT_6X8
+#undef PNTR_PIXELFONT_6X10
+#undef PNTR_PIXELFONT_7X12
+#undef PNTR_PIXELFONT_8X8
+#undef PNTR_PIXELFONT_8X12
+#undef PNTR_PIXELFONT_8X14
+#undef PNTR_PIXELFONT_10X16
+#undef PNTR_PIXELFONT_12X16
+#undef PNTR_PIXELFONT_12X20
+#undef PNTR_PIXELFONT_16X26
+#undef PNTR_PIXELFONT_22X36
+#undef PNTR_PIXELFONT_24X40
+#undef PNTR_PIXELFONT_32X53
+
 #define PNTR_PIXELFONT_DATA_IMPLEMENTATION
 #include "pntr_pixelfont_data.h"
 
@@ -130,9 +205,6 @@ extern "C" {
 #endif
 
 PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont_default(void) {
-    #ifndef PNTR_PIXELFONT_DEFAULT
-    #define PNTR_PIXELFONT_DEFAULT PNTR_PIXELFONT_4X6
-    #endif
     return pntr_load_pixelfont(PNTR_PIXELFONT_DEFAULT);
 }
 

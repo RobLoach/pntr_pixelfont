@@ -15,7 +15,9 @@ pntr_vector pntr_pixelfont_size(pntr_pixelfont font);
 The following pixel fonts are available. Each has a matching
 `PNTR_PIXELFONT_ENABLE_*` macro (`PNTR_PIXELFONT_ENABLE_4X6`, and so on) that
 compiles in just that font's bitmap data; `PNTR_PIXELFONT_ENABLE_ALL` enables
-every one of them.
+every one of them. The default font (`PNTR_PIXELFONT_DEFAULT`, or
+`PNTR_PIXELFONT_4X6` if that is not defined) is always compiled in, so
+`pntr_load_pixelfont_default()` works without any of these macros.
 
 - `PNTR_PIXELFONT_4X6`
 - `PNTR_PIXELFONT_5X8`
