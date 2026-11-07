@@ -138,11 +138,11 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont_default(void) {
 
 PNTR_PIXELFONT_API pntr_vector pntr_pixelfont_size(pntr_pixelfont font) {
     if (font < PNTR_PIXELFONT_FIRST || font >= PNTR_PIXELFONT_LAST) {
-        return (pntr_vector) {0, 0};
+        return PNTR_CLITERAL(pntr_vector) {0, 0};
     }
 
     const pntr_pixelfont_font* pixelfont = &PNTR_PIXELFONT_FONTS[font];
-    return (pntr_vector) {
+    return PNTR_CLITERAL(pntr_vector) {
         pixelfont->char_width,
         pixelfont->char_height
     };
@@ -150,13 +150,13 @@ PNTR_PIXELFONT_API pntr_vector pntr_pixelfont_size(pntr_pixelfont font) {
 
 PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
     if (font < PNTR_PIXELFONT_FIRST || font >= PNTR_PIXELFONT_LAST) {
-        return pntr_set_error(PNTR_ERROR_INVALID_ARGS);
+        return (pntr_font*)pntr_set_error(PNTR_ERROR_INVALID_ARGS);
     }
 
     // Get the font.
     const pntr_pixelfont_font* pixelfont = &PNTR_PIXELFONT_FONTS[font];
     if (pixelfont->data == NULL) {
-        return pntr_set_error(PNTR_ERROR_NOT_SUPPORTED);
+        return (pntr_font*)pntr_set_error(PNTR_ERROR_NOT_SUPPORTED);
     }
 
     // How many bytes one row of one glyph takes up in the font data. The uGUI
@@ -164,7 +164,7 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
     // ceil(char_width / 8) * char_height bytes long.
     int bytesPerRow = ((int)pixelfont->char_width + 7) / 8;
     if (bytesPerRow <= 0) {
-        return pntr_set_error(PNTR_ERROR_INVALID_ARGS);
+        return (pntr_font*)pntr_set_error(PNTR_ERROR_INVALID_ARGS);
     }
 
     // Create the font atlas, one column per printable ASCII glyph.
@@ -173,7 +173,7 @@ PNTR_PIXELFONT_API pntr_font* pntr_load_pixelfont(pntr_pixelfont font) {
         pixelfont->char_height,
         PNTR_BLANK);
     if (atlas == NULL) {
-        return pntr_set_error(PNTR_ERROR_NO_MEMORY);
+        return (pntr_font*)pntr_set_error(PNTR_ERROR_NO_MEMORY);
     }
 
     // Copy glyphs 0x20 through 0x7E of the table into columns 0 through 94.

@@ -34,11 +34,11 @@ int main() {
     // Render a row of text for every available font.
     for (int i = PNTR_PIXELFONT_FIRST; i < PNTR_PIXELFONT_LAST; i++) {
         // Load the font.
-        pntr_font* font = pntr_load_pixelfont(i);
+        pntr_font* font = pntr_load_pixelfont((pntr_pixelfont)i);
         pntr_assert(font != NULL);
 
         // Generate an image with the text, labelled with the font size.
-        pntr_vector size = pntr_pixelfont_size(i);
+        pntr_vector size = pntr_pixelfont_size((pntr_pixelfont)i);
 
         // The atlas only carries printable ASCII, 0x20 through 0x7E. This holds
         // identically with and without PNTR_ENABLE_UTF8, because every
