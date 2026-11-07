@@ -191,6 +191,7 @@ def generate(fonts):
         "\n"
         "#ifdef PNTR_PIXELFONT_DATA_IMPLEMENTATION\n"
         "#ifndef PNTR_PIXELFONT_DATA_IMPLEMENTATION_ONCE\n"
+        "#define PNTR_PIXELFONT_DATA_IMPLEMENTATION_ONCE\n"
         "\n"
         "#ifdef PNTR_PIXELFONT_ENABLE_ALL\n"
     )
