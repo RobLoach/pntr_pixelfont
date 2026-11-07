@@ -2,6 +2,8 @@
 
 Additional small pixel fonts from [uGUI](https://github.com/achimdoebler/UGUI) for use in [pntr](https://github.com/RobLoach/pntr).
 
+Requires C99 or C++20, as the implementation uses designated initializers.
+
 ## API
 
 ``` c
