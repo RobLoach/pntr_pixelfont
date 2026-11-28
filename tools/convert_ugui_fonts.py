@@ -117,10 +117,10 @@ HEADER = """\
 *   that same stride; mismatching it is what made the fonts wider than 8 pixels
 *   render as garbage in issue #1, fixed in adde55a.
 *
-*   Only glyphs 0x20 through 0x7E are ever read out of these tables. The rest
-*   of each table is kept as it came from uGUI, but is not reachable through
-*   pntr_load_pixelfont(); see the comment on that function in
-*   pntr_pixelfont.h.
+*   pntr_load_pixelfont() reads glyphs 0x20 through 0x7E out of these tables,
+*   plus 0x80 through 0xFF when pntr is built with PNTR_ENABLE_UTF8. The rest
+*   of each table is kept as it came from uGUI, but is not reachable; see the
+*   comment on that function in pntr_pixelfont.h.
 *
 *   LICENSE
 *

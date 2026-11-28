@@ -42,18 +42,21 @@ every one of them. The default font (`PNTR_PIXELFONT_DEFAULT`, or
 
 ## Character set
 
-Every font covers **printable ASCII only**: `0x20` (space) through `0x7E`
-(tilde), 95 glyphs. That is the same range as pntr's own default font. Any
-other character is skipped when drawing and when measuring, apart from `\n`,
-which pntr itself handles as a line break.
+Every font covers **printable ASCII**: `0x20` (space) through `0x7E` (tilde),
+95 glyphs, the same range as pntr's own default font.
 
-The uGUI tables these fonts come from hold 256 single-byte glyphs in a
-CP437-like arrangement, so there are accented letters and box-drawing
-characters in the data. They are not exposed, because a caller can only pick a
-glyph through the bytes of the string it draws, and there is no way to name a
-glyph above `0x7F` from a UTF-8 string literal with raw single-byte tables.
-Restricting the font to ASCII also means it behaves the same whether or not
-pntr was built with `PNTR_ENABLE_UTF8`.
+When pntr is built with `PNTR_ENABLE_UTF8`, each font also carries the upper
+half of its uGUI table, glyphs `0x80` through `0xFF`, mapped to their Unicode
+codepoints. That adds accented letters, box drawing, shading and symbols, so
+strings like `"é"`, `"░"` or `"£"` draw as expected. `PNTR_PIXELFONT_4X6` is
+laid out as [CP437](https://en.wikipedia.org/wiki/Code_page_437), and every
+other font as [CP850](https://en.wikipedia.org/wiki/Code_page_850). CP850's
+`0xD5` (`ı`) is left out, as several fonts hold a broken glyph there.
+
+Without `PNTR_ENABLE_UTF8`, the fonts are ASCII only, since raw bytes above
+`0x7F` cannot name these glyphs. Any character a font does not cover is skipped
+when drawing and when measuring, apart from `\n`, which pntr itself handles as
+a line break.
 
 ## Usage
 

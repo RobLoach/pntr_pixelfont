@@ -40,14 +40,13 @@ int main() {
         // Generate an image with the text, labelled with the font size.
         pntr_vector size = pntr_pixelfont_size((pntr_pixelfont)i);
 
-        // The atlas only carries printable ASCII, 0x20 through 0x7E. This holds
-        // identically with and without PNTR_ENABLE_UTF8, because every
-        // character in the set is a single byte below 0x80.
+        // Without PNTR_ENABLE_UTF8 the atlas only carries printable ASCII, 0x20
+        // through 0x7E. See pntr_pixelfont_utf8_test.c for the UTF-8 build.
         pntr_assert(font->charactersLen == 95);
         pntr_assert(font->atlas->width == size.x * 95);
         pntr_assert(font->atlas->height == size.y);
 
-        // pntr_measure_text() has to agree byte-for-byte across that option too.
+        // Report how wide the full ASCII sample measures.
         pntr_vector measured = pntr_measure_text_ex(font, PNTR_PIXELFONT_SAMPLE, 0);
         printf("%dx%d charactersLen=%d atlas=%dx%d measure=%dx%d\n",
             size.x, size.y, font->charactersLen,
